@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: oracle-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: oracle-db
+  template:
+    metadata:
+      labels:
+        app: oracle-db
+    spec:
+      containers:
+        - name: oracle-db
+          image: jishnuvs/oracle-xe:latest
+          ports:
+            - containerPort: 1521
+          volumeMounts:
+            - mountPath: /opt/oracle/oradata
+              name: oradata
+      volumes:
+        - name: oradata
+          persistentVolumeClaim:
+            claimName: oradata-pvc
